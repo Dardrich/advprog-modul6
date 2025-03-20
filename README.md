@@ -21,4 +21,3 @@ Method menggunakan `BufReader` untuk membaca data dari `TcpStream` secara efisie
 Method membaca setiap baris request HTTP hingga menemukan baris kosong (sebagai penanda akhir dari header). Baris-baris ini disimpan dalam sebuah vektor (`Vec<String>`)
 3) Mencetak request ke console
 Method mencetak seluruh header HTTP yang telah dikumpulkan ke console dalam format yang mudah dibaca (`{:#?}` untuk pretty-print)
-

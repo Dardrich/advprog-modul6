@@ -1,7 +1,7 @@
-use std::{
-    io::{BufReader, prelude::*},
-    net::{TcpListener, TcpStream},
-};
+use std::{ 
+    io::{prelude::*, BufReader}, 
+    net::{TcpListener, TcpStream}, 
+}; 
 
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
@@ -21,5 +21,6 @@ fn handle_connection(mut stream: TcpStream) {
         .take_while(|line| !line.is_empty())
         .collect();
 
+        
     println!("Request: {:#?}", http_request);
 }
