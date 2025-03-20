@@ -33,3 +33,13 @@ Kode membuat respons HTTP lengkap dengan status line (HTTP/1.1 200 OK), header C
 3) Mengirim Respons ke Client
 Kode mengirim respons yang telah dibuat ke client menggunakan `stream.write_all(response.as_bytes()).unwrap()`. Ini mengirimkan data melalui koneksi TCP yang sama.
 
+## Commit 3 Reflection Notes
+Intinya refactoring yang ada memisahkan logika pemrograman menjadi dua hal:
+- `handle_connection` untuk menangani koneksi TCP dan membaca request
+- `generate_resp` untuk membuat respons HTTP berdasarkan request
+
+Hal ini dilakukan untuk mencapai modularitas (karena logika respons dipisah, kode yang ada lebih mudah dikembangkan dan diuji), fleksibilitas (kini, server mampu menangani berbagai request, misalnya `200 OK` untuk `/` dan `400 NOT FOUND` untuk route lain), dan maintainability (karena method sekarang lebih kecil dan focused, perbaikan dan penambahan fitur mudah untuk dilakukan)
+
+![Commit 3.1 screen capture](capture-3-mod6-1.jpg)
+![Commit 3 screen capture](capture-3-mod6.jpg)
+
