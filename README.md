@@ -56,3 +56,15 @@ let (status_line, filename) = match &request_line[..] {
 ```
 Intinya kode ini memiliki tujuan untuk menambahkan durasi sebanyak 10 detik bagi program yang ada untuk berjalan kembali. Program ini bersifat single-threaded dan blocking. Jadi, selama waktu 10 detik tersebut, thread utama tertahan dan tidak bisa merespons request lain, bahkan jika request tersebut sederhana. Hal ini membuat semua request harus menunggu giliran untuk diproses.
 
+## Commit 5 Reflection Notes
+
+Masalah sebelumnya yang dihadapi adalah program yang di-desain secara single-threaded yang menyebabkan program dipaksa berjalan sekuensial dan saling tunggu-menunggu. Pada modifikasi kali ini, telah digunakan ThreadPool dan Worker. ThreadPool membuat sejumlah thread (di kasus ini, empat) yang siap menangani request, lalu ThreadPool mengirim request ke worker yang tersedia melalui channel. Worker akan menjalankan tugas secara bersamaan tanpa membuat thread baru setiap kali ada request.
+Mekanisme kerja:
+1) ThreadPool dibuat:
+Saat server dimulai, ThreadPool dibuat dengan sejumlah worker (misalnya, 4 worker). Setiap worker siap menerima tugas
+2) Request masuk:
+Ketika client mengirim request, server menerima koneksi (`TcpStream`). ThreadPool mengirim tugas (`handle_connection`) ke channel.
+3) Worker menangani request:
+Salah satu worker menerima tugas dari channel. Worker menjalankan `handle_connection`, yang membaca request, memprosesnya, dan mengirim respons.
+4) Concurrent handling:
+Jika ada banyak request, ThreadPool akan mendistribusikan tugas ke worker yang tersedia. Jika semua worker sibuk, tugas akan antri di channel sampai ada worker yang selesai.
