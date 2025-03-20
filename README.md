@@ -43,3 +43,16 @@ Hal ini dilakukan untuk mencapai modularitas (karena logika respons dipisah, kod
 ![Commit 3.1 screen capture](capture-3-mod6-1.jpg)
 ![Commit 3 screen capture](capture-3-mod6.jpg)
 
+## Commit 4 Reflection Notes
+```rust
+let (status_line, filename) = match &request_line[..] { 
+    "GET / HTTP/1.1" => ("HTTP/1.1 200 OK", "hello.html"), 
+    "GET /sleep HTTP/1.1" => { 
+        thread::sleep(Duration::from_secs(10)); 
+        ("HTTP/1.1 200 OK", "hello.html") 
+    } 
+    _ => ("HTTP/1.1 404 NOT FOUND", "404.html"), 
+}; 
+```
+Intinya kode ini memiliki tujuan untuk menambahkan durasi sebanyak 10 detik bagi program yang ada untuk berjalan kembali. Program ini bersifat single-threaded dan blocking. Jadi, selama waktu 10 detik tersebut, thread utama tertahan dan tidak bisa merespons request lain, bahkan jika request tersebut sederhana. Hal ini membuat semua request harus menunggu giliran untuk diproses.
+
